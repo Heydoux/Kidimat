@@ -23,7 +23,7 @@ if ( ! function_exists( 'kidimat_setup' ) ) {
     register_nav_menu( 'footer', esc_html__( 'Footer', 'theme' ) );
     
     add_theme_support( 'woocommerce');
-    add_theme_support( 'wc-product-gallery-zoom' );
+    //add_theme_support( 'wc-product-gallery-zoom' );
     add_theme_support( 'wc-product-gallery-lightbox' );
     add_theme_support( 'wc-product-gallery-slider' );
   }
@@ -48,10 +48,9 @@ function kidimat_enqueue_styles() {
 /* Charger les scripts Javascript */
 add_action( 'wp_enqueue_scripts', 'kidimat_enqueue_scripts' );
 function kidimat_enqueue_scripts() {
+  wp_enqueue_script('init', KIDIMAT_URI . '/js/init.js', array( 'jquery' ), '', 1 ); 
   if (is_front_page()){
     wp_enqueue_script('slider', '//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js', array('jquery'), '', true); 
     wp_enqueue_script('front-page', KIDIMAT_URI . '/js/front-page.js', array( 'jquery' ), '', 1 ); 
   }  
 }
-
-				

@@ -16,12 +16,14 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 get_header(); ?>
 
 <!-- BEGIN #page -->
-<div id="shop" class="hfeed">
-		<div class="pb-5">
-			<h3 class="text-center"><?php woocommerce_page_title(); ?></h3>
-		</div>
+<div id="shop" class="mb-5">
+
 		<!-- BEGIN #main -->
 		<div id="main" class="container">
+
+			<div class="py-5 text-center">
+				<h2><?php woocommerce_page_title(); ?></h2>
+			</div>
 
 			<?php do_action( 'woocommerce_archive_description' ); ?>
 
@@ -41,13 +43,13 @@ get_header(); ?>
 				<div class="cont col-md-9">
 
 					<!-- BEGIN #content -->
-					<div id="content" role="main">
+					<div id="content" class="ml-3" role="main">
 
 						<?php if ( have_posts() ) : ?>
 
 							<!--<?php wc_print_notices(); ?>-->
 
-							<div class="products-filter text-center">
+							<div class="products-filter text-center d-flex">
 
 									<?php
 										/**
@@ -76,7 +78,7 @@ get_header(); ?>
 								<?php while ( have_posts() ) : the_post(); ?>
 
 									<?php
-									$open = ! ( $count % $columns ) ? '<div class="row">' : '';
+									$open = ! ( $count % $columns ) ? '<div class="row w-100">' : '';
 									$close = ! ( $count % $columns ) && $count ? '</div>' : '';
 									echo $close . $open;
 									?>

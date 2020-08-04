@@ -15,7 +15,8 @@
 <div class="col-md-3">
 
 	<!-- BEGIN #sidebar -->
-	<div id="sidebar" role="complementary">
+	<div id="shop-sidebar" role="complementary">
+		<h2>Affiner</h2>
 		<?php if ( ! dynamic_sidebar( 'shop-sidebar' ) ) : ?>
 			<aside>
 				<?php get_product_search_form(); ?>
