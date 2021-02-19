@@ -30,7 +30,7 @@ if ( $max_value && $min_value === $max_value ) {
 	<div class="quantity">
 		<?php do_action( 'woocommerce_before_quantity_input_field' ); ?>
     <label class="screen-reader-text" for="<?php echo esc_attr( $input_id ); ?>"><?php echo esc_attr( $label ); ?></label>
-    <button aria-label="moins" type="button" class="kidimat-counter-button-left" disabled id="decrement-btn">-</button>
+    <button aria-label="moins" type="button" class="kidimat-counter-button-left decrement-btn" disabled>-</button>
 		<input
 			type="text"
 			id="<?php echo esc_attr( $input_id ); ?>"
@@ -44,7 +44,7 @@ if ( $max_value && $min_value === $max_value ) {
 			size="4"
 			placeholder="<?php echo esc_attr( $placeholder ); ?>"
       inputmode="<?php echo esc_attr( $inputmode ); ?>" />
-      <button aria-label="plus" type="button" class="kidimat-counter-button-right" id="increment-btn">+</button>
+      <button aria-label="plus" type="button" class="kidimat-counter-button-right increment-btn">+</button>
 		<?php do_action( 'woocommerce_after_quantity_input_field' ); ?>
 	</div>
 	<?php

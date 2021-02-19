@@ -30,7 +30,7 @@
             <p>Et le samedi de 8h00 à 12h00 et de 14h00 à 17h00</p>
           </div>
         </div>
-        <p class="text-center mt-3">Par <a class="wap-footer" href="https://www.webagenceparis.com/">WAP Web Agence Paris</a>.</p>
+        <p class="text-center mt-3 mb-0 pb-2">Par <a class="wap-footer" href="https://www.webagenceparis.com/">WAP Web Agence Paris</a>.</p>
       </div>
     </footer>    
     <?php wp_footer(); ?>

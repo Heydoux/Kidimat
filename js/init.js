@@ -19,23 +19,40 @@
     document.getElementById("tab-title-description").classList.add("active");
   }
   
-  if(document.getElementById("increment-btn")){
-    document.getElementById("increment-btn").onclick = function() {
+  if($('.decrement-btn')){
+    $(".increment-btn").on('click', function() {
       var input = this.previousElementSibling
       var value = parseInt(input.value, 10);
       value++;
       input.value = value;
-      document.getElementById("decrement-btn").disabled = false;
-    }
-
-    document.getElementById("decrement-btn").onclick = function() {
+      var decrement = this.previousElementSibling.previousElementSibling;
+      decrement.disabled = false;
+      document.getElementById("update-btn").disabled = false;
+      
+    });
+   
+    $('.decrement-btn').on('click', function(){
       var input = this.nextElementSibling;
       input.value -= 1;
+      document.getElementById("update-btn").disabled = false;
       if (input.value == 1){
         this.disabled = true;
       }
-    }
+    });
   }
+
+  $(document).ready(function(){
+    if(document.getElementsByClassName("increment-btn")){
+      var decrements = document.getElementsByClassName("decrement-btn");
+      for (var i = 0; i < decrements.length; i++)
+      {
+        var input = decrements[i].nextElementSibling;
+        if (input.value > 1){
+          decrements[i].disabled = false;
+        }
+      }
+    }
+  });
 
   
 })( jQuery );

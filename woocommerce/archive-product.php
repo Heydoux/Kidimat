@@ -45,7 +45,23 @@ get_header(); ?>
 					<!-- BEGIN #content -->
 					<div id="content" class="ml-3" role="main">
 
-						<?php if ( have_posts() ) : ?>
+						<?php 
+							$args = array(
+								'post_type' 			=> 'product',
+								'posts_per_page' 	=> 9,
+								'tax_query'				=> array(
+									array(
+										'taxonomy'   	=> 'product_cat',
+										'field'				=> 'slug',
+										'terms'				=> array('locations'),
+										'operator'		=> 'NOT IN'
+									)
+								)
+							);
+
+							$query = new WP_Query( $args );
+
+						if ( $query->have_posts() ) : ?>
 
 							<!--<?php wc_print_notices(); ?>-->
 
@@ -75,7 +91,7 @@ get_header(); ?>
 
 								<?php echo ($woocommerce_loop['loop']) ? '</div>' : ''; ?>
 
-								<?php while ( have_posts() ) : the_post(); ?>
+								<?php while ( $query->have_posts() ) : $query->the_post(); ?>
 
 									<?php
 									$open = ! ( $count % $columns ) ? '<div class="row w-100">' : '';
@@ -84,7 +100,7 @@ get_header(); ?>
 									?>
 
 									<div class="product-item col-md-4 col-6">
-
+										
 										<?php wc_get_template_part( 'content', 'product' ); ?>
 
 									</div>
@@ -110,7 +126,9 @@ get_header(); ?>
 
 							<?php wc_get_template( 'loop/no-products-found.php' ); ?>
 
-						<?php endif; ?>
+						<?php endif; 
+						wp_reset_postdata();
+						?>
 
 					</div>
 					<!-- END #content -->

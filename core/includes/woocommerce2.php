@@ -186,3 +186,28 @@ if ( ! function_exists( 'kidimat_sidebar_cart_fragment' ) ) {
 	}
 }
 add_filter( 'woocommerce_add_to_cart_fragments', 'kidimat_sidebar_cart_fragment' );
+
+
+
+
+
+
+/**
+ * Afficher "prix professionnel" si le client est enregistré en tant que professionnel 
+ */ 
+add_action( 'woocommerce_single_product_summary', 'wc_rrp_show', 5 );	
+function wc_rrp_show() {
+	global $product;		// Do not show this on variable products
+	$current_user = wp_get_current_user();
+	$user_roles = $current_user->roles;
+
+	if (is_professional_user(get_current_user_id())){
+		if ( $product->product_type <> 'variable' ) {
+			$rrp = get_post_meta( $product->id, 'prix_pro', true );
+			echo '<div class="pro_price">';
+			echo '<span class="woocommerce-rrp-price">' . woocommerce_price( $rrp ) . '</span>';			echo '</div>';
+		}	
+	}
+}	
+// Optional: To show on archive pages	
+add_action( 'woocommerce_after_shop_loop_item_title', 'wc_rrp_show' );

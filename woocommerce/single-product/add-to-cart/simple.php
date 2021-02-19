@@ -34,6 +34,7 @@ if ( $product->is_in_stock() ) : ?>
     <div class="kidimat-add-to-cart d-flex">
       <?php do_action( 'woocommerce_before_add_to_cart_button' ); ?>
 
+      
       <?php
       do_action( 'woocommerce_before_add_to_cart_quantity' );
 

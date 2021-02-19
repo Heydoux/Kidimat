@@ -56,16 +56,9 @@ get_header(); ?>
             <p class="text-center zoom-img-text">Cliquer sur l'image pour l'agrandir</p>
           </div>
           <div class="col-md-6">
-            <?php 
-            $current_user = wp_get_current_user();
-            $user_roles = $current_user->roles;
-          
-            if (in_array('client_professionnel', $user_roles)):
-            ?>
-              <div class="product-summary pb-5 pl-5 custopro">
-            <?php else:?>
-              <div class="product-summary pb-5 pl-5">
-            <?php endif;?>
+
+            <div class="product-summary pb-5 pl-5">
+
               <?php
                 /**
                  * woocommerce_single_product_summary hook

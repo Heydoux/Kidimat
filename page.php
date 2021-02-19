@@ -4,6 +4,7 @@
 
 
 <div id="page" >
+<?php the_post_thumbnail(); ?>
 <div class="container <?php if (is_account_page()): ?>account-page<?php endif; ?>">
 
     <?php

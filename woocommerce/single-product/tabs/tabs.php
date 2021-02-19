@@ -14,11 +14,11 @@
  * @package WooCommerce/Templates
  * @version 3.8.0
  */
-
+/*
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-
+*/
 /**
  * Filter tabs and allow third parties to add their own.
  *
@@ -26,6 +26,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @see woocommerce_default_product_tabs()
  */
+/*
 $product_tabs = apply_filters( 'woocommerce_product_tabs', array() );
 
 if ( ! empty( $product_tabs ) ) : ?>
@@ -54,3 +55,4 @@ if ( ! empty( $product_tabs ) ) : ?>
 	</div>
 
 <?php endif; ?>
+*/

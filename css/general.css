@@ -2,10 +2,12 @@ body{
   margin: 0;
 }
 
+.bold{
+  font-weight: 600;
+}
+
 .container, .container-large {
   width: 100%;
-  padding-right: 15px;
-  padding-left: 15px;
   margin-right: auto;
   margin-left: auto;
 }
@@ -375,6 +377,26 @@ body{
   margin-left: 3rem !important;
 }
 
+.mt-d,
+.my-d{
+  margin-top: 2rem !important;
+}
+
+.mb-d,
+.my-d{
+  margin-bottom: 2rem !important;
+}
+
+.ml-d,
+.mx-d{
+  margin-left: 2rem !important;
+}
+
+.mr-d,
+.mx-d{
+  margin-right: 2rem !important;
+}
+
 .p-0 {
   padding: 0 !important;
 }
@@ -550,6 +572,14 @@ body{
 
 .w-100{
   width: 100%;
+}
+
+.w-auto{
+  width: auto;
+}
+
+.h-auto{
+  height: auto;
 }
 
 .d-none {
