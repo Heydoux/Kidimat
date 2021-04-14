@@ -1,0 +1,12 @@
+.company-btn {
+  text-align: left;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.company-list .active .company-btn {
+  background-color: #007cba;
+  font-weight: bold;
+  color: white;
+  letter-spacing: 0.06rem;
+}

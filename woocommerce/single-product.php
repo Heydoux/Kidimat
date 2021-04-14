@@ -38,7 +38,16 @@ get_header(); ?>
   <div id="content" role="main">
 
     <?php while ( have_posts() ) : the_post(); ?>
-    <div class="">
+    <?php 
+      $is_location = false;
+      $cats = get_the_terms( get_the_ID(), 'product_cat' );
+      foreach ($cats as $cat) {
+        if ($cat->term_id == 47){
+          $is_location = true;
+        }
+      }
+    ?>
+    <div class="<?php if($is_location): ?>locations<?php endif; ?>">
       <div id="product-<?php the_ID(); ?>" <?php post_class(); ?>>
         <div class="row container">
           <div class="col-md-6">
@@ -76,6 +85,14 @@ get_header(); ?>
             </div>
           </div>
         </div>
+        <?php if($is_location): ?>
+          <div class="text-center related-title">
+            <h2 class="px-2">Demande pour location de durée supérieure</h2>
+            <div class="w-50 m-auto contact-box">
+              <?php echo do_shortcode('[contact-form-7 id="215" title="Demande de location"]'); ?>
+            </div>
+          </div>
+        <?php endif; ?>
         <div class="row">
           <div class="col-md-12">
             <?php 

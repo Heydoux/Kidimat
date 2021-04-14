@@ -22,121 +22,107 @@ get_header(); ?>
 		<div id="main" class="container">
 
 			<div class="py-5 text-center">
-				<h2><?php woocommerce_page_title(); ?></h2>
+				<h1><?php woocommerce_page_title(); ?></h1>
 			</div>
 
 			<?php do_action( 'woocommerce_archive_description' ); ?>
 
 			<!-- BEGIN row -->
 			<div class="row">
-
-				<?php
-					/**
-					 * woocommerce_sidebar hook
-					 *
-					 * @hooked woocommerce_get_sidebar - 10
-					 */
-					do_action( 'woocommerce_sidebar' );
-				?>
+				<div class="side col-md-3">
+				<!-- BEGIN #sidebar -->
+					<div id="shop-sidebar" role="complementary">
+						<?php if ( ! dynamic_sidebar( 'shop-sidebar' ) ) : ?>
+							<aside>
+								<?php get_product_search_form(); ?>
+							</aside>
+						<?php endif; ?>
+					</div>
+				<!-- END #sidebar -->
+				<!-- END col-3 -->
+				</div>
 				
 				<!-- BEGIN col-9 -->
 				<div class="cont col-md-9">
 
 					<!-- BEGIN #content -->
 					<div id="content" class="ml-3" role="main">
+						<?php
+							if(!function_exists('wc_get_products')) {
+								return;
+							}
 
-						<?php 
-							$args = array(
-								'post_type' 			=> 'product',
-								'posts_per_page' 	=> 9,
-								'tax_query'				=> array(
-									array(
-										'taxonomy'   	=> 'product_cat',
-										'field'				=> 'slug',
-										'terms'				=> array('locations'),
-										'operator'		=> 'NOT IN'
-									)
-								)
-							);
+							$ordering                = WC()->query->get_catalog_ordering_args();
+							$ordering['orderby']     = array_shift(explode(' ', $ordering['orderby']));
+							$ordering['orderby']     = stristr($ordering['orderby'], 'price') ? 'meta_value_num' : $ordering['orderby'];
+							$per_page       				 = apply_filters('loop_shop_per_page', wc_get_default_products_per_row() * wc_get_default_product_rows_per_page());
+							$page           				 = (get_query_var('paged')) ? absint(get_query_var('paged')) : 1;
+							$queried_object = get_queried_object();
+							$catorder = $queried_object->slug;
 
-							$query = new WP_Query( $args );
-
-						if ( $query->have_posts() ) : ?>
-
-							<!--<?php wc_print_notices(); ?>-->
-
-							<div class="products-filter text-center d-flex">
-
-									<?php
-										/**
-										 * woocommerce_before_shop_loop hook
-										 *
-										 * @hooked woocommerce_result_count - 20
-										 * @hooked woocommerce_catalog_ordering - 30
-										 */
-										do_action( 'woocommerce_before_shop_loop' );
-									?>
-
-							</div>
-
-							<?php woocommerce_product_loop_start(); ?>
-
-								<?php
-								global $woocommerce_loop;
-								$count = 0;
-								$columns = '3';
+							//echo json_encode($per_page);
+							
+							$products_result = wc_get_products( array(
+								'status'               => 'publish',
+								'limit'                => $per_page,
+								'page'								 => $page,
+								'paginate'             => true,
+								'orderby'              => $ordering['orderby'],
+								'order'                => $ordering['order'],
+								'exclude_category'  	 => 'locations',
+								'category' 						 => $catorder,  
+								'return'							 => 'ids',
+							));
+							//echo json_encode($products_result);
+							wc_set_loop_prop('current_page', $page);
+							wc_set_loop_prop('is_paginated', wc_string_to_bool(true));
+							wc_set_loop_prop('page_template', get_page_template_slug());
+							wc_set_loop_prop('per_page', 9);
+							wc_set_loop_prop('total', $products_result->total);
+							wc_set_loop_prop('total_pages', $products_result->max_num_pages);
+							
+							if($products_result) {
 								?>
-
-								<?php woocommerce_product_subcategories(); ?>
-
-								<?php echo ($woocommerce_loop['loop']) ? '</div>' : ''; ?>
-
-								<?php while ( $query->have_posts() ) : $query->the_post(); ?>
-
-									<?php
-									$open = ! ( $count % $columns ) ? '<div class="row w-100">' : '';
-									$close = ! ( $count % $columns ) && $count ? '</div>' : '';
-									echo $close . $open;
-									?>
-
-									<div class="product-item col-md-4 col-6">
-										
+								<div class="products-filter text-center">
+									<?php do_action( 'woocommerce_before_shop_loop' ); ?>
+								</div>
+								<?php
+								woocommerce_product_loop_start();
+									foreach($products_result->products as $product) {
+										$post_object = get_post($product);
+										setup_postdata($GLOBALS['post'] =& $post_object);
+										?>
+												<?php 
+											$is_location = false;
+											$cats = get_the_terms( get_the_ID(), 'product_cat' );
+											foreach ($cats as $cat) {
+												if ($cat->term_id == 47){
+													$is_location = true;
+												}
+											}
+											if (!$is_location):
+											?>
+										<div class="product-item col-md-4 col-6">
+									
 										<?php wc_get_template_part( 'content', 'product' ); ?>
-
+												
 									</div>
+									<?php endif; ?>
+									<?php
+									}
+									wp_reset_postdata();
+								woocommerce_product_loop_end();
+								do_action('woocommerce_after_shop_loop');
+							} else {
+								do_action('woocommerce_no_products_found');
+							}
 
-									<?php $count++; ?>
-
-								<?php endwhile; // end of the loop. ?>
-
-								<?php echo $count ? '</div>' : ''; ?>
-
-							<?php woocommerce_product_loop_end(); ?>
-
-							<?php
-								/**
-								 * woocommerce_after_shop_loop hook
-								 *
-								 * @hooked woocommerce_pagination - 10
-								 */
-								do_action( 'woocommerce_after_shop_loop' );
-							?>
-
-						<?php elseif ( ! woocommerce_product_subcategories( array( 'before' => woocommerce_product_loop_start( false ), 'after' => woocommerce_product_loop_end( false ) ) ) ) : ?>
-
-							<?php wc_get_template( 'loop/no-products-found.php' ); ?>
-
-						<?php endif; 
-						wp_reset_postdata();
 						?>
-
 					</div>
 					<!-- END #content -->
 
 				</div>
 				<!-- END col-9 -->
-
-
 
 			</div>
 			<!-- END row -->

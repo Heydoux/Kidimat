@@ -7,10 +7,10 @@
               <h5>KIDIMAT</h5>
             </div>
             <p>Z.A. du Pré Barreau <br>49630 Mazé-Milon</p>
-            <p>contact@kidimat.com</p>
+            <p><a href="mailto:contact@kidimat.fr?subject=Site internet Kidimat">contact@kidimat.fr</a></p>
             <ul class="social-media-icons d-flex pt-2">
               <li class="m-1">
-                <a class="facebook-icons" href="https://fr-fr.facebook.com/kidimat49/" target="_blank">
+                <a class="facebook-icons" href="https://fr-fr.facebook.fr/kidimat49/" target="_blank">
                   <img class="img-fluid" src="<?php echo get_template_directory_uri() ?>/images/facebook-logo.jpg">
                 </a>
               </li>

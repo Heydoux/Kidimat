@@ -3,7 +3,7 @@
 <?php get_header(); ?>
 
 
-<div id="page" >
+<div id="page" class="<?php if ( is_page( 'cart' ) || is_cart() ) :?>cart<?php endif; ?>">
 <?php the_post_thumbnail(); ?>
 <div class="container <?php if (is_account_page()): ?>account-page<?php endif; ?>">
 

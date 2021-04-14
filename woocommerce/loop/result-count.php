@@ -24,15 +24,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 <p class="woocommerce-result-count mr-4">
 	<?php
 	if ( 1 === $total ) {
-		_e( '1 résultat affiché', 'woocommerce' );
+		//_e( '1 résultat affiché', 'woocommerce' );
+		printf( '');
 	} elseif ( $total <= $per_page || -1 === $per_page ) {
 		/* translators: %d: total results */
-		printf( _n( 'Afficher tous les %d résultats triés par', 'Afficher tous les %d résultats triés par', $total, 'woocommerce' ), $total );
+		//printf( _n( 'Afficher tous les %d résultats triés par', 'Afficher tous les %d résultats triés par', $total, 'woocommerce' ), $total );
+		printf( '');
 	} else {
 		$first = ( $per_page * $current ) - $per_page + 1;
 		$last  = min( $total, $per_page * $current );
 		/* translators: 1: first result 2: last result 3: total results */
-		printf( _nx( 'Affichage de  %1$d&ndash;%2$d sur %3$d résultats triés par', 'Affichage de %1$d&ndash;%2$d sur %3$d résultats triés par', $total, 'with first and last result', 'woocommerce' ), $first, $last, $total );
+		//printf( _nx( 'Affichage de  %1$d&ndash;%2$d sur %3$d résultats triés par', 'Affichage de %1$d&ndash;%2$d sur %3$d résultats triés par', $total, 'with first and last result', 'woocommerce' ), $first, $last, $total );
+		printf( '');
 	}
 	?>
 </p>

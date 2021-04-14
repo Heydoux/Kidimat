@@ -1,11 +1,11 @@
 <?php
 /**
- * Lapin
+ * Kidimat
  * 
  * The sidebar containing the secondary widget area, displays on shop pages (Woocommerce)
  *
  * @package WordPress
- * @subpackage Lapin Boutique Themes
+ * @subpackage Kidimat
  * @author WAP <contact@webagenceparis.com>
  *
  */
@@ -84,6 +84,7 @@
 						<li class="cat-item cat-item-42"><a href="http://localhost/Kidimat/categorie-produit/reseaux/pvc/">PVC</a></li>
 					</ul>
 				</li>
+		
 			</ul>
 		</aside>
 		<!--

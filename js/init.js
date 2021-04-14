@@ -27,19 +27,32 @@
       input.value = value;
       var decrement = this.previousElementSibling.previousElementSibling;
       decrement.disabled = false;
-      document.getElementById("update-btn").disabled = false;
-      
+      if($("#update-btn")){
+        document.getElementById("update-btn").disabled = false;
+      }
     });
    
     $('.decrement-btn').on('click', function(){
       var input = this.nextElementSibling;
       input.value -= 1;
-      document.getElementById("update-btn").disabled = false;
+      if($("#update-btn")){
+        document.getElementById("update-btn").disabled = false;
+      }
       if (input.value == 1){
-        this.disabled = true;
+        $(this)[0].disabled = true;        
       }
     });
   }
+
+  $("#burger-btn").on("click", function() {
+    console.log("menu mobile click");
+    $("#navigation-principale-mobile").toggleClass("d-none");
+    if (!$("#navigation-principale-mobile").hasClass("d-none")){
+      $("#header-menu").css("height", "100vh");
+    } else {
+      $("#header-menu").css("height", "unset");
+    }
+  });
 
   $(document).ready(function(){
     if(document.getElementsByClassName("increment-btn")){

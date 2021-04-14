@@ -7,11 +7,22 @@ define('KIDIMAT_URI', get_template_directory_uri());
  */
 require_once( get_template_directory() . '/shortcodes/slider.php' );
 
+
 /**
  * Load up core options 
  */
 require_once( get_template_directory() . '/core/core.php' );
+/**
+ * Load Professionnal discount item
+ */
+require_once( get_template_directory() . '/woocommerce/discount_professionnals/discount_pro_install.php' );
+require_once( get_template_directory() . '/woocommerce/discount_professionnals/discount_pro_functions.php' );
+require_once( get_template_directory() . '/woocommerce/widgets/class-wc-widget-product-categories-kidimat.php');
 
+function wc_register_widgets_kidimat() {
+	register_widget( 'WC_Widget_Product_Categories_Kidimat' );
+}
+add_action( 'widgets_init', 'wc_register_widgets_kidimat' );
 
 /*** Lancer le setup du thème après le lancement du thème  */
 if ( ! function_exists( 'kidimat_setup' ) ) {
@@ -43,10 +54,15 @@ function kidimat_enqueue_styles() {
   if( is_admin_bar_showing()){
     wp_enqueue_style('admin-style', KIDIMAT_URI . '/css/admin.css', array(), null);
   }
+  
+  wp_enqueue_style('shop-style', KIDIMAT_URI . '/css/shop.css', array(), null);
+  
 }
 
 function admin_style() {
-  wp_enqueue_style("admin-style", KIDIMAT_URI . '/css/admin.css', array(), null);
+  wp_enqueue_style("admin-style", KIDIMAT_URI . '/css/general.css', array(), null);
+  wp_enqueue_style("discount-admin", KIDIMAT_URI . '/css/discount.css', array(), null);
+  wp_enqueue_script('discount', KIDIMAT_URI . '/js/discount.js', array( 'jquery' ), '', 1, true );
 }
 add_action("admin_enqueue_scripts", "admin_style");
 
@@ -61,15 +77,6 @@ function kidimat_enqueue_scripts() {
   } elseif (is_account_page()) {
     wp_enqueue_script('account', KIDIMAT_URI . '/js/account.js', array( 'jquery' ), '', 1 ); 
   }
-}
-
-/** Customize the product category widget */
-add_filter('woocommercer_product_categories_widget_args', 'widget_arguments');
-add_filter('widget_categories_args', 'widget_arguments');
-
-function widget_arguments( $args ){
-  $args['exclude'] = "47";
-  return $args;
 }
 
 /**
@@ -145,34 +152,6 @@ function crf_show_extra_profile_fields( $user ) {
         />
         <?php echo esc_html( get_the_author_meta( 'Code NAF', $user->ID ) ); ?></td>
 		</tr>
-    <tr>
-			<th><label for="professional_reductions"><?php esc_html_e( 'Réductions client professionnel', 'crf' ); ?></label></th>
-			<td class="row">
-        <?php 
-        /* Parent => 0 permet d'avoir que les catégories principales sans les sous catégories. 
-        $categories = get_categories( array(
-            'orderby' => 'name',
-            'parent'  => 0
-        ) );
-        */
-        $orderby = 'name';
-        $order = 'asc';
-        $hide_empty = false ;
-        $cat_args = array(
-            'orderby'    => $orderby,
-            'order'      => $order,
-            'hide_empty' => $hide_empty,
-            'parent'     => 0
-        );
-        $product_categories = get_terms( 'product_cat', $cat_args );
-        foreach ($product_categories as $category) :
-        ?>
-        <div class="col-md-3">
-          <input type="checkbox" id="'category-'<?php echo esc_attr($category->term_id); ?>" name="<?php echo esc_attr($category->name); ?>" value="<?php echo esc_attr($category->name); ?>">
-          <label for="'category-'<?php echo esc_attr($category->term_id); ?>"><?php echo $category->name; ?></label>
-        </div>
-        <?php endforeach; ?>
-		</tr>
 	</table>
 	<?php
 }
@@ -192,29 +171,44 @@ function crf_update_profile_fields( $user_id ) {
 }
 
 /**
- * Add menu to manage professionnal reduction 
+ * Créer une colonne Entreprise dans la liste des utilisateurs 
  */
-function add_professional_coupon_menu_redirect() {
-  if ( ! $this->should_display_legacy_menu() ) {
-    return;
-  }
-
-  add_submenu_page(
-    'woocommerce',
-    __( 'Réductions pro', 'woocommerce' ),
-    __( 'Réductions pro', 'woocommerce' ),
-    'manage_options',
-    'reduc-pro',
-    [ $this, 'reduc_pro_menu_moved' ]
-  );
+function new_modify_user_table( $column ) {
+  $column['billing_company'] = 'Entreprise';
+  return $column;
 }
-
-add_action( 'admin_menu', array( $this, 'add_professional_coupon_menu_redirect' ) );
+add_filter( 'manage_users_columns', 'new_modify_user_table' );
 
 /**
- * Call back for transition menu item
+ * Remplir la nouvelle colonne entreprise avec les données de l'utilisateur (billing_company)
  */
-function reduc_pro_menu_moved() {
-  wp_safe_redirect( $this->get_legacy_coupon_url(), 301 );
-  exit();
+function new_modify_user_table_row( $val, $column_name, $user_id ) {
+  switch ($column_name) {
+      case 'billing_company' :
+          return get_the_author_meta( 'billing_company', $user_id );
+      default:
+  }
+  return $val;
+}
+add_filter( 'manage_users_custom_column', 'new_modify_user_table_row', 10, 3 );
+
+/**
+ * Permettre de trier la liste des utilisateurs en fonction de l'entreprise de celui-ci
+ */
+
+add_filter( 'manage_users_sortable_columns', 'rudr_make_company_column_sortable' );
+function rudr_make_company_column_sortable( $columns ) {
+	return wp_parse_args( array( 'billing_company' => 'billing_company' ), $columns );
+}
+
+
+// Limit except length to 87 characters.
+// tn limited excerpt length by number of characters
+function get_excerpt($excerpt, $count ) {
+	$excerpt_m = strip_tags($excerpt);
+	if (strlen($excerpt_m) > $count){
+		$excerpt_m = substr($excerpt_m, 0, $count);
+  }
+  $excerpt_m = '<p>'.$excerpt_m.'... </p>';
+	return $excerpt_m;
 }
