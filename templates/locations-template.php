@@ -21,19 +21,35 @@ get_header(); ?>
       <div class="row">
 				<div class="side col-md-3">
 				<!-- BEGIN #sidebar -->
+        <!-- Quand on filtre par categorie de location, cela ouvre une page archive-product or on ne liste pas les locations sur ce type de page -->
+        <!--
 					<div id="locations-sidebar" role="complementary">
 						
-							<aside>
-                <h3>Locations sidebar</h3>
+							<aside class="widget woocommerce widget_product_categories_kidimat">
+                <div class="widget-header">
+                  <h3 class="widget-title">Catégorie de la location</h3>
+                </div>
+                <ul class="products-categories">
+                <?php 
+                /*$cat = get_term_by( 'slug', 'locations', 'product_cat' );
+                                
+                $categories = get_terms( 'product_cat', array('parent'  => 47));
+
+                foreach( $categories as $subcat ) {
+                  echo '<li class="cat-item cat-item-all"><a href="' .  get_site_url() . '/' . $subcat->slug">$subcat->name</a></li>';
+                }*/
+                ?>
+                </ul>
 							</aside>
 						
 					</div>
+              -->
 				<!-- END #sidebar -->
 				<!-- END col-3 -->
 				</div>
 
         <!-- BEGIN col-9 -->
-				<div class="cont col-md-9">
+				<div class="cont offset-1 col-md-10">
 
           <!-- BEGIN #content -->
           <div id="content" class="ml-3" role="main">

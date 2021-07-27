@@ -81,7 +81,7 @@ get_header(); ?>
 							wc_set_loop_prop('total', $products_result->total);
 							wc_set_loop_prop('total_pages', $products_result->max_num_pages);
 							
-							if($products_result) {
+							if($products_result->total > 0) {
 								?>
 								<div class="products-filter text-center">
 									<?php do_action( 'woocommerce_before_shop_loop' ); ?>
@@ -104,8 +104,7 @@ get_header(); ?>
 											?>
 										<div class="product-item col-md-4 col-6">
 									
-										<?php wc_get_template_part( 'content', 'product' ); ?>
-												
+										<?php wc_get_template_part( 'content', 'product' ); ?>				
 									</div>
 									<?php endif; ?>
 									<?php
@@ -114,7 +113,7 @@ get_header(); ?>
 								woocommerce_product_loop_end();
 								do_action('woocommerce_after_shop_loop');
 							} else {
-								do_action('woocommerce_no_products_found');
+								do_action('woocommerce_no_products_found'); 
 							}
 
 						?>

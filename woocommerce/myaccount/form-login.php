@@ -74,7 +74,7 @@ do_action( 'woocommerce_before_customer_login_form' ); ?>
       <button class="tab-bar-item button" id="pro" name="proBtn">Professionnel</button>
     </div>
 
-    <div id="tab-container" class="retail">
+    <div class="tab-container" id="tab-retail">
 
       <form method="post" class="woocommerce-form woocommerce-form-register register my-0" <?php do_action( 'woocommerce_register_form_tag' ); ?> >
 
@@ -104,18 +104,6 @@ do_action( 'woocommerce_before_customer_login_form' ); ?>
           <input type="text" class="input-text" name="billing_last_name" id="reg_billing_last_name" value="<?php if ( ! empty( $_POST['billing_last_name'] ) ) esc_attr_e( $_POST['billing_last_name'] ); ?>" />
         </p>
 
-        <p id="company-field" class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
-          <label for="reg_billing_company"><?php _e( 'Company', 'woocommerce' ); ?>&nbsp;<span class="required">*</span></label>
-          <input type="text" class="input-text" name="billing_company" id="reg_billing_company" value="<?php echo ( ! empty( $_POST['billing_company'] ) ) ? esc_attr_e( $_POST['billing_company'] ) : ""; ?>" />
-        </p>
-
-        <!--
-        <p id="code_NAF_field" class="form-row form-row-last">
-          <label for="reg_code_NAF"><?php _e( 'Code NAF', 'woocommerce' ); ?>&nbsp;<span class="required">*</span></label>
-          <input type="text" class="input-text" name="code_NAF" id="reg_code_NAF" value="<?php echo ( ! empty( $_POST['code_NAF'] ) ) ? esc_attr_e( $_POST['code_NAF'] ) : ""; ?>" />
-        </p>
-        -->
-
         <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
           <label for="reg_email"><?php esc_html_e( 'Email address', 'woocommerce' ); ?>&nbsp;<span class="required">*</span></label>
           <input type="email" class="woocommerce-Input woocommerce-Input--text input-text" name="email" id="reg_email" autocomplete="email" value="<?php echo ( ! empty( $_POST['email'] ) ) ? esc_attr( wp_unslash( $_POST['email'] ) ) : ''; ?>" /><?php // @codingStandardsIgnoreLine ?>
@@ -135,7 +123,10 @@ do_action( 'woocommerce_before_customer_login_form' ); ?>
         <?php do_action( 'woocommerce_register_form_end' ); ?>
       </form>
     </div>
-	</div>
+    <div class="tab-container" id="tab-pro" style="display:none;">
+      <?php echo do_shortcode('[contact-form-7 id="254" title="Création compte Pro"]'); ?>
+    </div>
+  </div>
 </div>
 <?php endif; ?> 
 

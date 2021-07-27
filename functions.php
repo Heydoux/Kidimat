@@ -15,8 +15,8 @@ require_once( get_template_directory() . '/core/core.php' );
 /**
  * Load Professionnal discount item
  */
-require_once( get_template_directory() . '/woocommerce/discount_professionnals/discount_pro_install.php' );
-require_once( get_template_directory() . '/woocommerce/discount_professionnals/discount_pro_functions.php' );
+//require_once( get_template_directory() . '/woocommerce/discount_professionnals/discount_pro_install.php' );
+//require_once( get_template_directory() . '/woocommerce/discount_professionnals/discount_pro_functions.php' );
 require_once( get_template_directory() . '/woocommerce/widgets/class-wc-widget-product-categories-kidimat.php');
 
 function wc_register_widgets_kidimat() {
@@ -63,6 +63,10 @@ function admin_style() {
   wp_enqueue_style("admin-style", KIDIMAT_URI . '/css/general.css', array(), null);
   wp_enqueue_style("discount-admin", KIDIMAT_URI . '/css/discount.css', array(), null);
   wp_enqueue_script('discount', KIDIMAT_URI . '/js/discount.js', array( 'jquery' ), '', 1, true );
+  $admin_handle = 'admin_css';
+	$admin_stylesheet = get_template_directory_uri() . '/css/admin.css';
+
+	wp_enqueue_style($admin_handle, $admin_stylesheet);
 }
 add_action("admin_enqueue_scripts", "admin_style");
 
@@ -211,4 +215,35 @@ function get_excerpt($excerpt, $count ) {
   }
   $excerpt_m = '<p>'.$excerpt_m.'... </p>';
 	return $excerpt_m;
+}
+
+
+/**
+ * Remove payment from checkout page when delivery choose
+ */
+
+add_filter('woocommerce_available_payment_gateways', 'gateway_disable_shipping');
+
+function gateway_disable_shipping( $available_gateways) {
+  //print_r($available_gateways);
+  global $woocommerce;
+
+  if( !is_admin() ) {
+    $chosen_methods = WC()->session->get('chosen_shipping_methods');
+
+    $chosen_shipping = $chosen_methods[0];
+    
+    if( 0 === strpos($chosen_shipping, 'flat_rate')) {
+      if (isset( $available_gateways['bacs'] ))
+        unset( $available_gateways['bacs'] );
+      if (isset( $available_gateways['payplug'] ))
+        unset( $available_gateways['payplug'] );
+    } else {
+      if (isset( $available_gateways['cod'] ))
+        unset( $available_gateways['cod'] );
+    }
+
+  }
+
+  return $available_gateways;
 }

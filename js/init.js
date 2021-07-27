@@ -13,13 +13,11 @@
     
   }
   */
-  
   /* Delete if we activate client reviews */
-  if (document.getElementById("tab-title-description")){
-    document.getElementById("tab-title-description").classList.add("active");
-  }
+  
   
   if($('.decrement-btn')){
+    
     $(".increment-btn").on('click', function() {
       var input = this.previousElementSibling
       var value = parseInt(input.value, 10);
@@ -27,7 +25,7 @@
       input.value = value;
       var decrement = this.previousElementSibling.previousElementSibling;
       decrement.disabled = false;
-      if($("#update-btn")){
+      if($("#update-btn").length){
         document.getElementById("update-btn").disabled = false;
       }
     });
@@ -35,7 +33,7 @@
     $('.decrement-btn').on('click', function(){
       var input = this.nextElementSibling;
       input.value -= 1;
-      if($("#update-btn")){
+      if($("#update-btn").length){
         document.getElementById("update-btn").disabled = false;
       }
       if (input.value == 1){
@@ -67,5 +65,14 @@
     }
   });
 
-  
+  $('form.checkout').on('change', 'input[name^="shipping_method"]', function(){
+    var inputs = $('.shipping_method');
+    for (var i = 0; i < inputs.length; i++){
+      var value = inputs[i].value;
+      if (value.indexOf('flat_rate') >= 0){
+        console.log('toto');
+      }
+    }
+  });
+
 })( jQuery );

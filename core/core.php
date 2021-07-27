@@ -16,3 +16,8 @@ define( 'KIDIMATCORE_PATH', get_template_directory() . '/core/' );
 require_once KIDIMATCORE_PATH . 'includes/woocommerce.php';
 require_once KIDIMATCORE_PATH . 'includes/register-sidebars.php';
 require_once KIDIMATCORE_PATH . 'includes/functions-utility.php';
+
+require_once KIDIMATCORE_PATH . 'includes/customer-type/pro.php';
+require_once KIDIMATCORE_PATH . 'includes/customer-type/tp.php';
+require_once KIDIMATCORE_PATH . 'includes/customer-type/macon.php';
+require_once KIDIMATCORE_PATH . 'includes/customer-type/paysagiste.php';
